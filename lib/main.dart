@@ -24,21 +24,24 @@ class MyHomePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(_appTitle),
+        backgroundColor: Colors.purple,
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Container(
-            width: double.infinity,
-            child: const Card(
-              child: Text(
-                'gráfico',
-                style: TextStyle(fontSize: 20),
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Container(
+              width: double.infinity,
+              child: const Card(
+                child: Text(
+                  'gráfico',
+                  style: TextStyle(fontSize: 20),
+                ),
               ),
             ),
-          ),
-          TransactionUser(),
-        ],
+            TransactionUser(),
+          ],
+        ),
       ),
     );
   }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class TransactionForm extends StatelessWidget {
   final titleController = TextEditingController();
@@ -20,11 +21,28 @@ class TransactionForm extends StatelessWidget {
               children: [
                 TextField(
                   controller: titleController,
-                  decoration: InputDecoration(labelText: 'Título'),
+                  decoration: InputDecoration(
+                    labelText: 'Título',
+                    floatingLabelStyle: new TextStyle(color: Colors.purple),
+                    focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.purple),
+                    ),
+                  ),
+                  cursorColor: Colors.purple,
                 ),
                 TextField(
                   controller: valueController,
-                  decoration: InputDecoration(labelText: 'Valor (R\$)'),
+                  decoration: InputDecoration(
+                    labelText: 'Valor (R\$)',
+                    floatingLabelStyle: new TextStyle(color: Colors.purple),
+                    focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Colors.purple,
+                      ),
+                    ),
+                  ),
+                  keyboardType: TextInputType.numberWithOptions(decimal: true),
+                  cursorColor: Colors.purple,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
