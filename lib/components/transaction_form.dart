@@ -1,11 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-class TransactionForm extends StatelessWidget {
+class TransactionForm extends StatefulWidget {
+  final void Function(String, double) onSubmit;
+
+  TransactionForm(this.onSubmit);
+
+  @override
+  State<TransactionForm> createState() => _TransactionFormState();
+}
+
+class _TransactionFormState extends State<TransactionForm> {
   final titleController = TextEditingController();
   final valueController = TextEditingController();
-
-  final void Function(String, double) onSubmit;
 
   _submitform() {
     final title = titleController.text;
@@ -15,11 +22,8 @@ class TransactionForm extends StatelessWidget {
       return;
     }
 
-    onSubmit(title, value);
-    print('${titleController.text} \n${valueController.text}');
+    widget.onSubmit(title, value);
   }
-
-  TransactionForm(this.onSubmit);
 
   @override
   Widget build(BuildContext context) {
@@ -33,30 +37,33 @@ class TransactionForm extends StatelessWidget {
               children: [
                 TextField(
                   controller: titleController,
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                     labelText: 'Título',
-                    floatingLabelStyle: TextStyle(color: Colors.purple),
+                    floatingLabelStyle:
+                        TextStyle(color: Theme.of(context).colorScheme.primary),
                     focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.purple),
+                      borderSide: BorderSide(
+                          color: Theme.of(context).colorScheme.primary),
                     ),
                   ),
                   onSubmitted: (_) => _submitform(),
-                  cursorColor: Colors.purple,
+                  cursorColor: Theme.of(context).colorScheme.primary,
                 ),
                 TextField(
                   controller: valueController,
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                     labelText: 'Valor (R\$)',
-                    floatingLabelStyle: TextStyle(color: Colors.purple),
+                    floatingLabelStyle:
+                        TextStyle(color: Theme.of(context).colorScheme.primary),
                     focusedBorder: UnderlineInputBorder(
                       borderSide: BorderSide(
-                        color: Colors.purple,
+                        color: Theme.of(context).colorScheme.primary,
                       ),
                     ),
                   ),
                   keyboardType: TextInputType.numberWithOptions(decimal: true),
                   onSubmitted: (_) => _submitform(),
-                  cursorColor: Colors.purple,
+                  cursorColor: Theme.of(context).colorScheme.primary,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -66,7 +73,7 @@ class TransactionForm extends StatelessWidget {
                       onPressed: _submitform,
                       child: const Text('Nova transação'),
                       style: TextButton.styleFrom(
-                        backgroundColor: Colors.purple,
+                        backgroundColor: Theme.of(context).colorScheme.primary,
                         primary: Colors.white,
                       ),
                     ),
