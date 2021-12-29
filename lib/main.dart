@@ -16,6 +16,14 @@ class ExpensesApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: MyHomePage(),
+      theme: ThemeData(
+        colorScheme: const ColorScheme.light(
+          primary: Color.fromARGB(255, 82, 183, 136),
+          onPrimary: Color.fromARGB(255, 255, 250, 246),
+          secondary: Color.fromARGB(255, 64, 145, 108),
+          onSecondary: Color.fromARGB(255, 234, 255, 220),
+        ),
+      ),
     );
   }
 }
@@ -59,6 +67,8 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
       _transactions.add(newTransaction);
     });
+
+    Navigator.of(context).pop();
   }
 
   @override
@@ -66,7 +76,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(_appTitle),
-        backgroundColor: Colors.purple,
+        backgroundColor: Theme.of(context).colorScheme.primary,
         actions: [
           IconButton(
             onPressed: () => _openTansactionFormModal(context),
@@ -93,7 +103,9 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => _openTansactionFormModal(context),
-        child: Icon(Icons.add),
+        child: Icon(
+          Icons.add,
+        ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
