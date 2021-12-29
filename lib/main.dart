@@ -23,6 +23,19 @@ class ExpensesApp extends StatelessWidget {
           secondary: Color.fromARGB(255, 64, 145, 108),
           onSecondary: Color.fromARGB(255, 234, 255, 220),
         ),
+        fontFamily: 'Lato',
+        appBarTheme: AppBarTheme(
+          toolbarTextStyle: ThemeData.light().textTheme.copyWith().bodyText1,
+          titleTextStyle: ThemeData.light()
+              .textTheme
+              .copyWith(
+                headline6: TextStyle(
+                  fontFamily: 'Nunito',
+                  fontSize: 20,
+                ),
+              )
+              .headline6,
+        ),
       ),
     );
   }
@@ -75,7 +88,14 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(_appTitle),
+        centerTitle: true,
+        title: Text(
+          _appTitle,
+          style: const TextStyle(
+            fontFamily: 'Nunito',
+            fontWeight: FontWeight.bold,
+          ),
+        ),
         backgroundColor: Theme.of(context).colorScheme.primary,
         actions: [
           IconButton(
