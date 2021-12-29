@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'package:despesas_pessoais/components/chart.dart';
 import 'package:despesas_pessoais/components/transaction_form.dart';
 import 'package:flutter/material.dart';
 import 'models/transaction.dart';
@@ -24,6 +25,12 @@ class ExpensesApp extends StatelessWidget {
           onSecondary: Color.fromARGB(255, 234, 255, 220),
         ),
         fontFamily: 'Lato',
+        textTheme: ThemeData.light().textTheme.copyWith(
+              headline1: const TextStyle(
+                fontFamily: 'Lato',
+                fontWeight: FontWeight.bold,
+              ),
+            ),
         appBarTheme: AppBarTheme(
           toolbarTextStyle: ThemeData.light().textTheme.copyWith().bodyText1,
           titleTextStyle: ThemeData.light()
@@ -50,17 +57,30 @@ class _MyHomePageState extends State<MyHomePage> {
   final String _appTitle = 'Despesas pessoais';
 
   final List<Transaction> _transactions = [
-    // Transaction(
-    //     id: '1',
-    //     title: 'Chinelo da oakley',
-    //     value: 90.00,
-    //     date: DateTime.now()),
-    // Transaction(
-    //     id: '2',
-    //     title: 'Cartão de crédito nubank',
-    //     value: 77.86,
-    //     date: DateTime(2021, 12, 10))
+    Transaction(
+        id: '0',
+        title: 'Crédito c6 bank',
+        value: 100.00,
+        date: DateTime.now().subtract(Duration(days: 1))),
+    Transaction(
+        id: '1',
+        title: 'Chinelo da oakley',
+        value: 90.00,
+        date: DateTime.now().subtract(Duration(days: 2))),
+    Transaction(
+        id: '2',
+        title: 'Cartão de crédito nubank',
+        value: 77.86,
+        date: DateTime.now().subtract(Duration(days: 4)))
   ];
+
+  List<Transaction> get _recentTransactions {
+    return _transactions.where((tr) {
+      return tr.date.isAfter(DateTime.now().subtract(
+        const Duration(days: 7),
+      ));
+    }).toList();
+  }
 
   _openTansactionFormModal(BuildContext context) {
     showModalBottomSheet(
@@ -108,22 +128,14 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Container(
-              width: double.infinity,
-              child: const Card(
-                child: Text(
-                  'gráfico',
-                  style: TextStyle(fontSize: 20),
-                ),
-              ),
-            ),
+            Chart(_recentTransactions),
             TransactionList(_transactions),
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => _openTansactionFormModal(context),
-        child: Icon(
+        child: const Icon(
           Icons.add,
         ),
       ),
