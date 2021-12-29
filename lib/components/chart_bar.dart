@@ -1,4 +1,3 @@
-import 'package:despesas_pessoais/components/chart.dart';
 import 'package:flutter/material.dart';
 
 class ChartBar extends StatelessWidget {
@@ -7,9 +6,9 @@ class ChartBar extends StatelessWidget {
   final double percent;
 
   const ChartBar({
-    required this.valorGasto,
-    required this.label,
-    required this.percent,
+    this.valorGasto = 0,
+    this.label = '',
+    this.percent = 0.0,
   });
 
   @override
