@@ -29,7 +29,7 @@ class ExpensesApp extends StatelessWidget {
           titleTextStyle: ThemeData.light()
               .textTheme
               .copyWith(
-                headline6: TextStyle(
+                headline6: const TextStyle(
                   fontFamily: 'Nunito',
                   fontSize: 20,
                 ),
@@ -49,17 +49,17 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   final String _appTitle = 'Despesas pessoais';
 
-  final _transactions = [
-    Transaction(
-        id: '1',
-        title: 'Chinelo da oakley',
-        value: 90.00,
-        date: DateTime.now()),
-    Transaction(
-        id: '2',
-        title: 'Cartão de crédito nubank',
-        value: 77.86,
-        date: DateTime(2021, 12, 10))
+  final List<Transaction> _transactions = [
+    // Transaction(
+    //     id: '1',
+    //     title: 'Chinelo da oakley',
+    //     value: 90.00,
+    //     date: DateTime.now()),
+    // Transaction(
+    //     id: '2',
+    //     title: 'Cartão de crédito nubank',
+    //     value: 77.86,
+    //     date: DateTime(2021, 12, 10))
   ];
 
   _openTansactionFormModal(BuildContext context) {
