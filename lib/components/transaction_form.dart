@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
 
 class TransactionForm extends StatefulWidget {
-  final void Function(String, double) onSubmit;
+  final void Function(String, double, DateTime) onSubmit;
 
   TransactionForm(this.onSubmit);
 
@@ -11,18 +12,33 @@ class TransactionForm extends StatefulWidget {
 }
 
 class _TransactionFormState extends State<TransactionForm> {
-  final titleController = TextEditingController();
-  final valueController = TextEditingController();
+  final _titleController = TextEditingController();
+  final _valueController = TextEditingController();
+  DateTime _selectedDate = DateTime.now();
 
   _submitform() {
-    final title = titleController.text;
-    final value = double.tryParse(valueController.text) ?? 0;
+    final title = _titleController.text;
+    final value = double.tryParse(_valueController.text) ?? 0;
+    final date = _selectedDate;
 
     if (title.isEmpty || value <= 0) {
       return;
     }
 
-    widget.onSubmit(title, value);
+    widget.onSubmit(title, value, date);
+  }
+
+  _showDatePicker() {
+    showDatePicker(
+            context: context,
+            initialDate: DateTime.now(),
+            firstDate: DateTime(2020),
+            lastDate: DateTime.now())
+        .then((pickedDate) {
+      setState(() {
+        _selectedDate = pickedDate ?? DateTime.now();
+      });
+    });
   }
 
   @override
@@ -36,7 +52,7 @@ class _TransactionFormState extends State<TransactionForm> {
             child: Column(
               children: [
                 TextField(
-                  controller: titleController,
+                  controller: _titleController,
                   decoration: InputDecoration(
                     labelText: 'Título',
                     floatingLabelStyle:
@@ -50,7 +66,7 @@ class _TransactionFormState extends State<TransactionForm> {
                   cursorColor: Theme.of(context).colorScheme.primary,
                 ),
                 TextField(
-                  controller: valueController,
+                  controller: _valueController,
                   decoration: InputDecoration(
                     labelText: 'Valor (R\$)',
                     floatingLabelStyle:
@@ -64,6 +80,30 @@ class _TransactionFormState extends State<TransactionForm> {
                   keyboardType: TextInputType.numberWithOptions(decimal: true),
                   onSubmitted: (_) => _submitform(),
                   cursorColor: Theme.of(context).colorScheme.primary,
+                ),
+                Row(
+                  children: [
+                    Expanded(
+                        child: Text(
+                            'Data selecionada: ${DateFormat('d/M/y').format(_selectedDate)}')),
+                    Container(
+                        margin: EdgeInsets.all(5),
+                        child: ElevatedButton(
+                          onPressed: _showDatePicker,
+                          child: Row(
+                            children: [
+                              Container(
+                                margin: EdgeInsets.all(4),
+                                child: Icon(
+                                  Icons.calendar_today_outlined,
+                                  size: 18,
+                                ),
+                              ),
+                              Text('Selecione uma data')
+                            ],
+                          ),
+                        )),
+                  ],
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
