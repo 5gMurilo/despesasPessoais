@@ -12,7 +12,7 @@ class TransactionList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 400,
+      height: 450,
       child: transactions.isEmpty
           ? Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -69,6 +69,7 @@ class TransactionList extends StatelessWidget {
                         onRemove(transac.id);
                       },
                       color: Theme.of(context).colorScheme.secondary,
+                      hoverColor: Theme.of(context).colorScheme.error,
                     ),
                   ),
                 );
