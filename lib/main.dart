@@ -70,11 +70,20 @@ class _MyHomePageState extends State<MyHomePage> {
     showModalBottomSheet(
         context: context,
         shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
+            borderRadius: BorderRadius.vertical(top: Radius.circular(10))),
+        isScrollControlled: true,
         builder: (_) {
-          bool isLand =
-              MediaQuery.of(context).orientation == Orientation.landscape;
-          return TransactionForm(_addTransaction, isLand);
+          return SingleChildScrollView(
+            child: Padding(
+              padding: EdgeInsets.only(
+                top: 10,
+                bottom: MediaQuery.of(context).viewInsets.bottom + 10,
+                left: 7,
+                right: 7,
+              ),
+              child: TransactionForm(_addTransaction),
+            ),
+          );
         });
   }
 
