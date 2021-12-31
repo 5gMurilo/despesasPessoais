@@ -69,8 +69,12 @@ class _MyHomePageState extends State<MyHomePage> {
   _openTansactionFormModal(BuildContext context) {
     showModalBottomSheet(
         context: context,
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
         builder: (_) {
-          return TransactionForm(_addTransaction);
+          bool isLand =
+              MediaQuery.of(context).orientation == Orientation.landscape;
+          return TransactionForm(_addTransaction, isLand);
         });
   }
 
@@ -94,40 +98,66 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  bool _showChart = false;
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text(
-          _appTitle,
-          style: const TextStyle(
-            fontFamily: 'Nunito',
-            fontWeight: FontWeight.bold,
-          ),
+    bool isLandscape =
+        MediaQuery.of(context).orientation == Orientation.landscape;
+
+    final appBar = AppBar(
+      centerTitle: true,
+      title: Text(
+        _appTitle,
+        style: const TextStyle(
+          fontFamily: 'Nunito',
+          fontWeight: FontWeight.bold,
         ),
-        backgroundColor: Theme.of(context).colorScheme.primary,
-        actions: [
-          IconButton(
-            onPressed: () => _openTansactionFormModal(context),
-            icon: Icon(Icons.add),
-          ),
-        ],
       ),
+      backgroundColor: Theme.of(context).colorScheme.primary,
+      actions: [
+        IconButton(
+          onPressed: () => _openTansactionFormModal(context),
+          icon: Icon(Icons.add),
+        ),
+        if (isLandscape)
+          IconButton(
+            onPressed: () {
+              setState(() {
+                _showChart = !_showChart;
+              });
+            },
+            icon: _showChart ? Icon(Icons.list) : Icon(Icons.bar_chart),
+          )
+      ],
+    );
+
+    final availableHeight = MediaQuery.of(context).size.height -
+        appBar.preferredSize.height -
+        MediaQuery.of(context).padding.top;
+
+    return Scaffold(
+      appBar: appBar,
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Chart(_recentTransactions),
-            TransactionList(_transactions, _removeTransaction),
+          children: <Widget>[
+            if (_showChart || !isLandscape)
+              Container(
+                height: availableHeight * (isLandscape ? 0.7 : 0.25),
+                child: Chart(_recentTransactions),
+              ),
+            if (!_showChart || !isLandscape)
+              Container(
+                height: availableHeight * 0.75,
+                child: TransactionList(_transactions, _removeTransaction),
+              ),
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
         onPressed: () => _openTansactionFormModal(context),
-        child: const Icon(
-          Icons.add,
-        ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
