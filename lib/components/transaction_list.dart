@@ -11,19 +11,20 @@ class TransactionList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final mediaQuery = MediaQuery.of(context);
     return transactions.isEmpty
         ? LayoutBuilder(
             builder: (ctx, constraints) {
               return Column(
                 children: [
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   Text(
                     'Nenhuma transação cadastrada',
                     style: Theme.of(context).textTheme.headline6,
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   Container(
@@ -62,14 +63,26 @@ class TransactionList extends StatelessWidget {
                     style: Theme.of(context).textTheme.headline6,
                   ),
                   subtitle: Text(DateFormat('d MMM y').format(transac.date)),
-                  trailing: IconButton(
-                    icon: Icon(Icons.delete_forever),
-                    onPressed: () {
-                      onRemove(transac.id);
-                    },
-                    color: Theme.of(context).colorScheme.secondary,
-                    hoverColor: Theme.of(context).colorScheme.error,
-                  ),
+                  trailing: mediaQuery.size.width > 400
+                      ? TextButton.icon(
+                          onPressed: () => onRemove(transac.id),
+                          icon: Icon(
+                            Icons.delete_forever,
+                            color: Theme.of(context).colorScheme.error,
+                          ),
+                          label: Text(
+                            'Excluir transação',
+                            style: TextStyle(
+                                color: Theme.of(context).colorScheme.error),
+                          ),
+                        )
+                      : IconButton(
+                          icon: Icon(Icons.delete_forever),
+                          onPressed: () {
+                            onRemove(transac.id);
+                          },
+                          color: Theme.of(context).colorScheme.error,
+                        ),
                 ),
               );
             },

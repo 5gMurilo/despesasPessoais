@@ -44,12 +44,8 @@ class _TransactionFormState extends State<TransactionForm> {
   Widget build(BuildContext context) {
     return Card(
       elevation: 5,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.only(
-            topRight: Radius.circular(10),
-            topLeft: Radius.circular(10),
-            bottomLeft: Radius.circular(10),
-            bottomRight: Radius.circular(10)),
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(10)),
       ),
       child: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -83,7 +79,8 @@ class _TransactionFormState extends State<TransactionForm> {
                   ),
                 ),
               ),
-              keyboardType: TextInputType.numberWithOptions(decimal: true),
+              keyboardType:
+                  const TextInputType.numberWithOptions(decimal: true),
               onSubmitted: (_) => _submitform(),
               cursorColor: Theme.of(context).colorScheme.primary,
             ),
@@ -99,8 +96,8 @@ class _TransactionFormState extends State<TransactionForm> {
                     child: Row(
                       children: [
                         Container(
-                          margin: EdgeInsets.all(4),
-                          child: Icon(
+                          margin: const EdgeInsets.all(4),
+                          child: const Icon(
                             Icons.calendar_today_outlined,
                             size: 18,
                           ),
