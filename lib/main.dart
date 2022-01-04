@@ -1,6 +1,8 @@
 import 'dart:math';
+import 'dart:io';
 import 'package:despesas_pessoais/components/chart.dart';
 import 'package:despesas_pessoais/components/transaction_form.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'models/transaction.dart';
 import 'components/transaction_form.dart';
@@ -109,10 +111,22 @@ class _MyHomePageState extends State<MyHomePage> {
 
   bool _showChart = false;
 
+  void seinao() {}
+
+  Widget _getIconButton(IconData icon, VoidCallback fn) {
+    return Platform.isIOS
+        ? GestureDetector(onTap: fn, child: Icon(icon))
+        : IconButton(onPressed: fn, icon: Icon(icon));
+  }
+
   @override
   Widget build(BuildContext context) {
-    bool isLandscape =
-        MediaQuery.of(context).orientation == Orientation.landscape;
+    final mediaQuery = MediaQuery.of(context);
+    bool isLandscape = mediaQuery.orientation == Orientation.landscape;
+
+    final iconList = Platform.isIOS ? CupertinoIcons.refresh : Icons.list;
+    final iconChart =
+        Platform.isIOS ? CupertinoIcons.chart_bar : Icons.bar_chart;
 
     final appBar = AppBar(
       centerTitle: true,
@@ -125,29 +139,28 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       backgroundColor: Theme.of(context).colorScheme.primary,
       actions: [
-        IconButton(
-          onPressed: () => _openTansactionFormModal(context),
-          icon: Icon(Icons.add),
+        _getIconButton(
+          Platform.isIOS ? CupertinoIcons.add : Icons.add,
+          () => _openTansactionFormModal(context),
         ),
         if (isLandscape)
-          IconButton(
-            onPressed: () {
+          _getIconButton(
+            _showChart ? iconList : iconChart,
+            () {
               setState(() {
                 _showChart = !_showChart;
               });
             },
-            icon: _showChart ? Icon(Icons.list) : Icon(Icons.bar_chart),
           )
       ],
     );
 
-    final availableHeight = MediaQuery.of(context).size.height -
+    final availableHeight = mediaQuery.size.height -
         appBar.preferredSize.height -
-        MediaQuery.of(context).padding.top;
+        mediaQuery.padding.top;
 
-    return Scaffold(
-      appBar: appBar,
-      body: SingleChildScrollView(
+    final bodyPage = SafeArea(
+      child: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
@@ -158,17 +171,68 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             if (!_showChart || !isLandscape)
               Container(
-                height: availableHeight * 0.75,
+                height: availableHeight * (isLandscape ? 1 : 0.7),
                 child: TransactionList(_transactions, _removeTransaction),
               ),
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
-        onPressed: () => _openTansactionFormModal(context),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
+
+    final actions = [
+      IconButton(
+        onPressed: () => _openTansactionFormModal(context),
+        icon: Icon(Icons.add),
+      ),
+      if (isLandscape)
+        IconButton(
+          onPressed: () {
+            setState(() {
+              _showChart = !_showChart;
+            });
+          },
+          icon: _showChart ? Icon(Icons.list) : Icon(Icons.bar_chart),
+        )
+    ];
+
+    return Platform.isIOS
+        ? CupertinoPageScaffold(
+            navigationBar: CupertinoNavigationBar(
+              middle: Text(_appTitle),
+              trailing: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: actions,
+              ),
+            ),
+            child: bodyPage,
+          )
+        : Scaffold(
+            appBar: appBar,
+            body: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: <Widget>[
+                  if (_showChart || !isLandscape)
+                    Container(
+                      height: availableHeight * (isLandscape ? 0.7 : 0.25),
+                      child: Chart(_recentTransactions),
+                    ),
+                  if (!_showChart || !isLandscape)
+                    Container(
+                      height: availableHeight * (isLandscape ? 1 : 0.7),
+                      child: TransactionList(_transactions, _removeTransaction),
+                    ),
+                ],
+              ),
+            ),
+            floatingActionButton: Platform.isIOS
+                ? Container()
+                : FloatingActionButton(
+                    child: Icon(Icons.add),
+                    onPressed: () => _openTansactionFormModal(context),
+                  ),
+            floatingActionButtonLocation:
+                FloatingActionButtonLocation.centerFloat,
+          );
   }
 }
