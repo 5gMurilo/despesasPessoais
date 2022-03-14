@@ -6,28 +6,28 @@ class ChartBar extends StatelessWidget {
   final double percent;
 
   const ChartBar({
+    Key? key,
     this.valorGasto = 0,
     this.label = '',
     this.percent = 0.0,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    print('build() chartbar');
     return LayoutBuilder(
       builder: (context, constraints) {
         return Column(
           children: [
-            Container(
+            SizedBox(
               height: constraints.maxHeight * 0.12,
               child: FittedBox(
-                child: Text('${valorGasto.toStringAsFixed(2)}'),
+                child: Text(valorGasto.toStringAsFixed(2)),
               ),
             ),
             SizedBox(
               height: constraints.maxHeight * 0.04,
             ),
-            Container(
+            SizedBox(
               height: constraints.maxHeight * 0.6,
               width: 10,
               child: Stack(
@@ -39,7 +39,7 @@ class ChartBar extends StatelessWidget {
                         color: Colors.grey,
                         width: 1.0,
                       ),
-                      color: Color.fromRGBO(220, 220, 220, 1),
+                      color: const Color.fromRGBO(220, 220, 220, 1),
                       borderRadius: BorderRadius.circular(6),
                     ),
                   ),
