@@ -1,6 +1,6 @@
+import 'package:despesas_pessoais/components/card_item.dart';
 import 'package:flutter/material.dart';
 import '../models/transaction.dart';
-import 'package:intl/intl.dart';
 
 class TransactionList extends StatelessWidget {
   final List<Transaction> transactions;
@@ -11,7 +11,6 @@ class TransactionList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final mediaQuery = MediaQuery.of(context);
     return transactions.isEmpty
         ? LayoutBuilder(
             builder: (ctx, constraints) {
@@ -43,48 +42,7 @@ class TransactionList extends StatelessWidget {
             itemBuilder: (ctx, index) {
               final transac = transactions[index];
 
-              return Card(
-                elevation: 5,
-                margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 8),
-                child: ListTile(
-                  leading: CircleAvatar(
-                    radius: 30,
-                    backgroundColor: Theme.of(context).colorScheme.primary,
-                    foregroundColor: Theme.of(context).colorScheme.onPrimary,
-                    child: Padding(
-                      padding: const EdgeInsets.all(6.2),
-                      child: FittedBox(
-                        child: Text('R\$${transac.value}'),
-                      ),
-                    ),
-                  ),
-                  title: Text(
-                    transac.title,
-                    style: Theme.of(context).textTheme.headline6,
-                  ),
-                  subtitle: Text(DateFormat('d MMM y').format(transac.date)),
-                  trailing: mediaQuery.size.width > 400
-                      ? TextButton.icon(
-                          onPressed: () => onRemove(transac.id),
-                          icon: Icon(
-                            Icons.delete_forever,
-                            color: Theme.of(context).colorScheme.error,
-                          ),
-                          label: Text(
-                            'Excluir transação',
-                            style: TextStyle(
-                                color: Theme.of(context).colorScheme.error),
-                          ),
-                        )
-                      : IconButton(
-                          icon: const Icon(Icons.delete_forever),
-                          onPressed: () {
-                            onRemove(transac.id);
-                          },
-                          color: Theme.of(context).colorScheme.error,
-                        ),
-                ),
-              );
+              return CardItem(transac, onRemove);
             },
           );
   }
