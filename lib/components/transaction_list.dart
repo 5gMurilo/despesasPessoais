@@ -11,6 +11,7 @@ class TransactionList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print('build() transactionList');
     final mediaQuery = MediaQuery.of(context);
     return transactions.isEmpty
         ? LayoutBuilder(
@@ -27,7 +28,7 @@ class TransactionList extends StatelessWidget {
                   const SizedBox(
                     height: 20,
                   ),
-                  Container(
+                  SizedBox(
                     height: constraints.maxHeight * 0.6,
                     child: Image.asset(
                       'assets/images/waiting.png',
@@ -45,7 +46,7 @@ class TransactionList extends StatelessWidget {
 
               return Card(
                 elevation: 5,
-                margin: EdgeInsets.symmetric(vertical: 5, horizontal: 8),
+                margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 8),
                 child: ListTile(
                   leading: CircleAvatar(
                     radius: 30,
@@ -77,7 +78,7 @@ class TransactionList extends StatelessWidget {
                           ),
                         )
                       : IconButton(
-                          icon: Icon(Icons.delete_forever),
+                          icon: const Icon(Icons.delete_forever),
                           onPressed: () {
                             onRemove(transac.id);
                           },

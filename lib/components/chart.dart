@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class Chart extends StatelessWidget {
-  const Chart(this.recentTransactions);
+  const Chart(this.recentTransactions, {Key? key}) : super(key: key);
 
   final List<Transaction> recentTransactions;
 
@@ -43,10 +43,11 @@ class Chart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print('build() chart');
     groupedTransactions;
     return Card(
       elevation: 6,
-      margin: EdgeInsets.all(20),
+      margin: const EdgeInsets.all(20),
       child: Padding(
         padding: const EdgeInsets.all(5.0),
         child: Row(

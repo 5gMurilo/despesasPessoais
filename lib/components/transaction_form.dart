@@ -1,4 +1,5 @@
 import 'package:despesas_pessoais/components/adaptative_button.dart';
+import 'package:despesas_pessoais/components/adaptative_date_picker.dart';
 import 'package:despesas_pessoais/components/adaptative_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -6,7 +7,7 @@ import 'package:intl/intl.dart';
 
 class TransactionForm extends StatefulWidget {
   final void Function(String, double, DateTime) onSubmit;
-  TransactionForm(this.onSubmit);
+  const TransactionForm(this.onSubmit, {Key? key}) : super(key: key);
 
   @override
   State<TransactionForm> createState() => _TransactionFormState();
@@ -27,19 +28,6 @@ class _TransactionFormState extends State<TransactionForm> {
     }
 
     widget.onSubmit(title, value, date);
-  }
-
-  _showDatePicker() {
-    showDatePicker(
-            context: context,
-            initialDate: DateTime.now(),
-            firstDate: DateTime(2020),
-            lastDate: DateTime.now())
-        .then((pickedDate) {
-      setState(() {
-        _selectedDate = pickedDate ?? DateTime.now();
-      });
-    });
   }
 
   @override
@@ -66,31 +54,13 @@ class _TransactionFormState extends State<TransactionForm> {
               onSubmitted: _submitform,
               label: 'Valor R\$',
             ),
-            Row(
-              children: [
-                Expanded(
-                    child: Text(
-                        'Data selecionada: ${DateFormat('d/M/y').format(_selectedDate)}')),
-                Container(
-                  margin: EdgeInsets.all(5),
-                  child: ElevatedButton(
-                    onPressed: _showDatePicker,
-                    child: Row(
-                      children: [
-                        Container(
-                          margin: const EdgeInsets.all(4),
-                          child: const Icon(
-                            Icons.calendar_today_outlined,
-                            size: 18,
-                          ),
-                        ),
-                        Text('Selecione uma data')
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
+            AdaptativeDatePicker(
+                selectedDate: _selectedDate,
+                onDateChange: (newDate) {
+                  setState(() {
+                    _selectedDate = newDate;
+                  });
+                }),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
