@@ -9,7 +9,7 @@ import 'components/transaction_form.dart';
 import 'components/transaction_list.dart';
 
 void main(List<String> args) {
-  runApp(ExpensesApp());
+  runApp(const ExpensesApp());
 }
 
 class ExpensesApp extends StatelessWidget {
@@ -71,7 +71,7 @@ class _MyHomePageState extends State<MyHomePage> {
   _openTansactionFormModal(BuildContext context) {
     showModalBottomSheet(
         context: context,
-        shape: RoundedRectangleBorder(
+        shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(top: Radius.circular(10))),
         isScrollControlled: true,
         builder: (_) {
@@ -111,8 +111,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
   bool _showChart = false;
 
-  void seinao() {}
-
   Widget _getIconButton(IconData icon, VoidCallback fn) {
     return Platform.isIOS
         ? GestureDetector(onTap: fn, child: Icon(icon))
@@ -121,6 +119,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    print('build() _MyHomePageState');
     final mediaQuery = MediaQuery.of(context);
     bool isLandscape = mediaQuery.orientation == Orientation.landscape;
 
@@ -135,6 +134,7 @@ class _MyHomePageState extends State<MyHomePage> {
         style: const TextStyle(
           fontFamily: 'Nunito',
           fontWeight: FontWeight.bold,
+          letterSpacing: 0.18,
         ),
       ),
       backgroundColor: Theme.of(context).colorScheme.primary,
@@ -165,12 +165,12 @@ class _MyHomePageState extends State<MyHomePage> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             if (_showChart || !isLandscape)
-              Container(
+              SizedBox(
                 height: availableHeight * (isLandscape ? 0.7 : 0.25),
                 child: Chart(_recentTransactions),
               ),
             if (!_showChart || !isLandscape)
-              Container(
+              SizedBox(
                 height: availableHeight * (isLandscape ? 1 : 0.7),
                 child: TransactionList(_transactions, _removeTransaction),
               ),
@@ -182,7 +182,7 @@ class _MyHomePageState extends State<MyHomePage> {
     final actions = [
       IconButton(
         onPressed: () => _openTansactionFormModal(context),
-        icon: Icon(Icons.add),
+        icon: const Icon(Icons.add),
       ),
       if (isLandscape)
         IconButton(
@@ -191,7 +191,8 @@ class _MyHomePageState extends State<MyHomePage> {
               _showChart = !_showChart;
             });
           },
-          icon: _showChart ? Icon(Icons.list) : Icon(Icons.bar_chart),
+          icon:
+              _showChart ? const Icon(Icons.list) : const Icon(Icons.bar_chart),
         )
     ];
 
@@ -213,12 +214,12 @@ class _MyHomePageState extends State<MyHomePage> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: <Widget>[
                   if (_showChart || !isLandscape)
-                    Container(
+                    SizedBox(
                       height: availableHeight * (isLandscape ? 0.7 : 0.25),
                       child: Chart(_recentTransactions),
                     ),
                   if (!_showChart || !isLandscape)
-                    Container(
+                    SizedBox(
                       height: availableHeight * (isLandscape ? 1 : 0.7),
                       child: TransactionList(_transactions, _removeTransaction),
                     ),
@@ -228,7 +229,7 @@ class _MyHomePageState extends State<MyHomePage> {
             floatingActionButton: Platform.isIOS
                 ? Container()
                 : FloatingActionButton(
-                    child: Icon(Icons.add),
+                    child: const Icon(Icons.add),
                     onPressed: () => _openTansactionFormModal(context),
                   ),
             floatingActionButtonLocation:

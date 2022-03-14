@@ -11,12 +11,13 @@ class AdaptativeTextField extends StatelessWidget {
   final TextEditingController controller;
   final TextInputType? inputType;
 
-  AdaptativeTextField({
+  const AdaptativeTextField({
+    Key? key,
     required this.label,
     required this.onSubmitted,
     required this.controller,
     required this.inputType,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +31,7 @@ class AdaptativeTextField extends StatelessWidget {
               onSubmitted: (_) => onSubmitted,
               keyboardType: inputType,
               placeholder: label,
-              padding: EdgeInsets.symmetric(
+              padding: const EdgeInsets.symmetric(
                 horizontal: 6,
                 vertical: 12,
               ),
